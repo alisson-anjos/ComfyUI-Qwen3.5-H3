@@ -7,10 +7,34 @@ from pathlib import Path
 
 import numpy as np
 import torch
+from huggingface_hub import hf_hub_download
 from PIL import Image
 from safetensors import safe_open
 from safetensors.torch import load_file
 from transformers import AutoModelForImageTextToText, AutoProcessor
+
+HF_PROJ_REPO = "Alissonerdx/Qwen3.5-9B-Minimax-H3"
+
+
+def _resolve_model_file(path_or_name: str, default_hf_filename: str, auto_download: bool) -> str:
+    """Return an existing local path, or download from HF into ComfyUI's models dir."""
+    val = (path_or_name or "").strip()
+    if val and Path(val).exists():
+        return val
+    try:
+        import folder_paths
+        cache_dir = Path(folder_paths.models_dir) / "text_encoders" / "qwen35_h3"
+    except Exception:
+        cache_dir = Path.home() / ".cache" / "qwen35_h3"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    if val:
+        candidate = cache_dir / Path(val).name
+        if candidate.exists():
+            return str(candidate)
+    if not auto_download:
+        raise FileNotFoundError(f"Model file not found locally and auto_download=False: {val or default_hf_filename}")
+    hf_file = val if ("/" in val and not val.startswith("/")) else default_hf_filename
+    return hf_hub_download(repo_id=HF_PROJ_REPO, filename=hf_file, local_dir=str(cache_dir))
 
 
 class Qwen35H3Clip:
@@ -199,10 +223,11 @@ class Qwen35H3ClipLoader:
         return {
             "required": {
                 "model_path": ("STRING", {"default": "Qwen/Qwen3.5-9B"}),
-                "projection_path": ("STRING", {"default": "/workspace/qwen35-h3/outputs/ara_v1/projection_best.safetensors"}),
+                "projection_file": ("STRING", {"default": "projection_best.safetensors"}),
+                "auto_download": ("BOOLEAN", {"default": True}),
             },
             "optional": {
-                "ara_path": ("STRING", {"default": ""}),
+                "ara_file": ("STRING", {"default": "ara_best.safetensors"}),
             },
         }
 
@@ -210,8 +235,10 @@ class Qwen35H3ClipLoader:
     FUNCTION = "load"
     CATEGORY = "conditioning/minimax"
 
-    def load(self, model_path: str, projection_path: str, ara_path: str = ""):
-        return (Qwen35H3Clip(model_path=model_path, projection_path=projection_path, ara_path=ara_path),)
+    def load(self, model_path: str, projection_file: str, auto_download: bool = True, ara_file: str = ""):
+        proj_path = _resolve_model_file(projection_file, "projection_best.safetensors", auto_download)
+        ara_path = _resolve_model_file(ara_file, "ara_best.safetensors", auto_download) if (ara_file or "").strip() else ""
+        return (Qwen35H3Clip(model_path=model_path, projection_path=proj_path, ara_path=ara_path),)
 
 
 NODE_CLASS_MAPPINGS = {
