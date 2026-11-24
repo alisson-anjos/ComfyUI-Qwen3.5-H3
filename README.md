@@ -23,10 +23,18 @@ Add **`Qwen3.5-9B H3 Projection CLIP Loader`** (`Qwen35H3ClipLoader`, under `con
 
 - **`model_path`**: `"Qwen/Qwen3.5-9B"` (or local path to the Hugging Face `Qwen/Qwen3.5-9B` directory)
 - **`projection_file`**: `"minimax_h3_qwen3.5_9b_projection.safetensors"` (auto-downloaded from [Alissonerdx/Qwen3.5-9B-Minimax-H3](https://huggingface.co/Alissonerdx/Qwen3.5-9B-Minimax-H3))
-- **`lora_file`** *(optional)*: `"minimax_h3_qwen3.5_9b_lora.safetensors"` (auto-downloaded from HF; LoRA on `visual.merger` + layers 12–19)
+- **`lora_file`** *(optional)*: `"minimax_h3_qwen3.5_9b_lora.safetensors"` (auto-downloaded from HF)
 - **`auto_download`**: `True` (automatically downloads weights if not found locally)
 
 Connect its `CLIP` output directly to ComfyUI's official **`MiniMax H3 Reference to Video`** (`MiniMaxH3ReferenceToVideo`) node.
+
+## What is `minimax_h3_qwen3.5_9b_lora.safetensors`?
+
+It is a **rank-16 LoRA (34 linear modules)** trained **jointly** with `minimax_h3_qwen3.5_9b_projection.safetensors` against MiniMax-H3's `Qwen3-VL-32B` teacher:
+- **`model.visual.merger` (`linear_fc1`, `linear_fc2`)**: adapts how `<Picture 1..N>` reference image patches are projected into the language stream, significantly improving reference/identity fidelity (`vision` cosine `0.7873 -> 0.8867`).
+- **Language layers `12–19` (`o_proj`, `gate_proj`, `up_proj`, `down_proj`, `out_proj`)**: aligns the hidden states right before the layer-20 tap (`text` cosine `0.8919 -> 0.9492`).
+
+At load time, `Qwen35H3ClipLoader` merges the LoRA directly into the linear weights (`W += (alpha / r) * B @ A`), adding **zero runtime overhead**.
 
 ## Baseline Results (Projection Only — Without LoRA)
 
