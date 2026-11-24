@@ -2,7 +2,7 @@
 
 Use **Qwen/Qwen3.5-9B** as a multimodal (`<Picture 1..N>` + text) conditioning encoder for **MiniMax-H3 Ref2VA** in ComfyUI.
 
-This node extracts intermediate layer representations (tap 20, unnormalized) from `Qwen/Qwen3.5-9B`, formats prompts and static image references using MiniMax-H3's exact layout (`<Picture i>: <vision block> ... <prompt>`, no chat template), applies a trained `4096 -> 5120` projection (and optional ARA LoRA), and emits standard ComfyUI `CONDITIONING` with `minimax_token_tags`.
+This node extracts intermediate layer representations (tap 20, unnormalized) from `Qwen/Qwen3.5-9B`, formats prompts and static image references using MiniMax-H3's exact layout (`<Picture i>: <vision block> ... <prompt>`, no chat template), applies a trained `4096 -> 5120` projection (and optional LoRA), and emits standard ComfyUI `CONDITIONING` with `minimax_token_tags`.
 
 All downstream MiniMax-H3 nodes (`MiniMaxH3ReferenceToVideo`, `MiniMaxH3SigmaShift`, `KSampler`, `VAEDecode`) work out of the box.
 
@@ -28,9 +28,9 @@ Add **`Qwen3.5-9B H3 Projection CLIP Loader`** (`Qwen35H3ClipLoader`, under `con
 
 Connect its `CLIP` output directly to ComfyUI's official **`MiniMax H3 Reference to Video`** (`MiniMaxH3ReferenceToVideo`) node.
 
-## Baseline Results (Projection Only — Without ARA LoRA)
+## Baseline Results (Projection Only — Without LoRA)
 
-The initial baseline (`projection_best.safetensors`, without ARA LoRA) was evaluated on **20 held-out multi-reference cases** (`1` to `4` reference images per case) from `WithAnyone/MultiID-Bench`, comparing **Native MiniMax-H3 (Qwen3-VL-32B INT8)** vs **Qwen3.5-9B + Projection** with identical seeds, steps, resolution (`672x384`, `124` frames, `24` fps), and reference images:
+The initial baseline (`minimax_h3_qwen3.5_9b_projection.safetensors` without LoRA) was evaluated on **20 held-out multi-reference cases** (`1` to `4` reference images per case) from `WithAnyone/MultiID-Bench`, comparing **Native MiniMax-H3 (Qwen3-VL-32B INT8)** vs **Qwen3.5-9B + Projection** with identical seeds, steps, resolution (`672x384`, `124` frames, `24` fps), and reference images:
 
 - **Validation Cosine Similarity (118 held-out sources)**: `0.8396` overall (`text: 0.8919`, `vision: 0.7873`)
 - **20-Case Paired Video Comparison** (`evidence/video_comparison.json`):
@@ -38,7 +38,7 @@ The initial baseline (`projection_best.safetensors`, without ARA LoRA) was evalu
   - Mean Frame Correlation: `0.441`
   - Mean Generation Time (4-step Pika Ref2VA + Turbo): `15.77s` (native) vs `20.68s` (Qwen3.5-9B projected)
 
-> **Note:** Joint **ARA LoRA (`visual.merger` + layers 12–19) + Projection** training is currently in progress to boost `<Picture 1..N>` reference fidelity (Epoch 1 validation already jumped from `0.7873` to `0.8801` vision cosine and `0.8919` to `0.9417` text cosine). LoRA comparison examples will be added next!
+> **Note:** Joint **LoRA (`visual.merger` + layers 12–19) + Projection** training is currently in progress to boost `<Picture 1..N>` reference fidelity (Epoch 2 validation already reached **`0.9492` text** / **`0.8867` vision** / **`0.9180` overall**). LoRA comparison examples will be added next!
 
 ### Visual Examples (Projection Only, No LoRA)
 
