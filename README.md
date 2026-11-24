@@ -1,4 +1,4 @@
-# ComfyUI-Qwen35-H3
+# ComfyUI-Qwen3.5-H3
 
 Use **Qwen/Qwen3.5-9B** as a multimodal (`<Picture 1..N>` + text) conditioning encoder for **MiniMax-H3 Ref2VA** in ComfyUI.
 
@@ -10,8 +10,8 @@ All downstream MiniMax-H3 nodes (`MiniMaxH3ReferenceToVideo`, `MiniMaxH3SigmaShi
 
 ```bash
 cd ComfyUI/custom_nodes
-git clone https://github.com/alisson-anjos/ComfyUI-Qwen35-H3.git
-cd ComfyUI-Qwen35-H3
+git clone https://github.com/alisson-anjos/ComfyUI-Qwen3.5-H3.git
+cd ComfyUI-Qwen3.5-H3
 pip install -r requirements.txt
 ```
 

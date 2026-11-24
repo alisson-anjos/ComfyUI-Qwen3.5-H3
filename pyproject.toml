@@ -1,0 +1,22 @@
+[project]
+name = "comfyui-qwen3-5-h3"
+description = "ComfyUI text/vision encoder bridge to use Qwen/Qwen3.5-9B with MiniMax-H3 Ref2VA via a calibrated projection and optional ARA LoRA."
+version = "0.1.0"
+license = {file = "LICENSE"}
+dependencies = [
+    "transformers>=4.51.0",
+    "huggingface_hub>=0.28.0",
+    "safetensors>=0.4.5",
+    "Pillow>=10.0.0",
+    "numpy>=1.26.0",
+]
+
+[project.urls]
+Repository = "https://github.com/alisson-anjos/ComfyUI-Qwen3.5-H3"
+"Bug Tracker" = "https://github.com/alisson-anjos/ComfyUI-Qwen3.5-H3/issues"
+
+[tool.comfy]
+PublisherId = "alisson-anjos"
+DisplayName = "ComfyUI-Qwen3.5-H3"
+Icon = ""
+includes = []
