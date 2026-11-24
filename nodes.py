@@ -223,11 +223,11 @@ class Qwen35H3ClipLoader:
         return {
             "required": {
                 "model_path": ("STRING", {"default": "Qwen/Qwen3.5-9B"}),
-                "projection_file": ("STRING", {"default": "projection_best.safetensors"}),
+                "projection_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_projection.safetensors"}),
                 "auto_download": ("BOOLEAN", {"default": True}),
             },
             "optional": {
-                "ara_file": ("STRING", {"default": "ara_best.safetensors"}),
+                "ara_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_ara.safetensors"}),
             },
         }
 
@@ -236,8 +236,8 @@ class Qwen35H3ClipLoader:
     CATEGORY = "conditioning/minimax"
 
     def load(self, model_path: str, projection_file: str, auto_download: bool = True, ara_file: str = ""):
-        proj_path = _resolve_model_file(projection_file, "projection_best.safetensors", auto_download)
-        ara_path = _resolve_model_file(ara_file, "ara_best.safetensors", auto_download) if (ara_file or "").strip() else ""
+        proj_path = _resolve_model_file(projection_file, "minimax_h3_qwen3.5_9b_projection.safetensors", auto_download)
+        ara_path = _resolve_model_file(ara_file, "minimax_h3_qwen3.5_9b_ara.safetensors", auto_download) if (ara_file or "").strip() else ""
         return (Qwen35H3Clip(model_path=model_path, projection_path=proj_path, ara_path=ara_path),)
 
 
