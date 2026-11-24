@@ -1,0 +1,359 @@
+{
+  "total_paired_cases": 20,
+  "mean_psnr_db": 12.877,
+  "mean_frame_corr": 0.441,
+  "mean_native_seconds": 15.77,
+  "mean_qwen35_seconds": 20.68,
+  "cases": [
+    {
+      "id": "case_01",
+      "refs": 1,
+      "ref_paths": [
+        "qwen35-h3-eval/case_01/picture_1.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n\ndetailed_description:\na close-up of a person wearing a dark hoodie, casting a shadow over their face. The individual appears to be male, looking intensely at the viewer with a serious expression. The background is blurred, emphasizing the person. The text is in Chinese.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42000,
+      "task_type": "single_person",
+      "native_seconds": 99.01,
+      "qwen35_seconds": 101.31,
+      "mse": 0.038325,
+      "mae": 0.120051,
+      "psnr_db": 14.165,
+      "frame_corr": 0.4378
+    },
+    {
+      "id": "case_02",
+      "refs": 2,
+      "ref_paths": [
+        "qwen35-h3-eval/case_02/picture_1.png",
+        "qwen35-h3-eval/case_02/picture_2.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n\ndetailed_description:\ntwo women on a stage. The woman on the left, holding a microphone, is wearing a denim jacket and has long, wavy hair. The woman on the right, with a ponytail, is wearing a white T-shirt and a sparkly necklace. She has her hand on her chest and appears to be crying.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42001,
+      "task_type": "two_person",
+      "native_seconds": 15.82,
+      "qwen35_seconds": 20.63,
+      "mse": 0.055745,
+      "mae": 0.162498,
+      "psnr_db": 12.538,
+      "frame_corr": 0.6657
+    },
+    {
+      "id": "case_03",
+      "refs": 3,
+      "ref_paths": [
+        "qwen35-h3-eval/case_03/picture_1.png",
+        "qwen35-h3-eval/case_03/picture_2.png",
+        "qwen35-h3-eval/case_03/picture_3.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n\ndetailed_description:\nfour people, two females and two males. The woman in front wears a purple patterned shirt, her mouth open in surprise. The man beside her has a serious expression. The other woman in the back appears worried, while the man behind has a calm look. All are adults, indoors.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42002,
+      "task_type": "multi_person",
+      "native_seconds": 11.24,
+      "qwen35_seconds": 17.05,
+      "mse": 0.028199,
+      "mae": 0.117935,
+      "psnr_db": 15.498,
+      "frame_corr": 0.522
+    },
+    {
+      "id": "case_04",
+      "refs": 4,
+      "ref_paths": [
+        "qwen35-h3-eval/case_04/picture_1.png",
+        "qwen35-h3-eval/case_04/picture_2.png",
+        "qwen35-h3-eval/case_04/picture_3.png",
+        "qwen35-h3-eval/case_04/picture_4.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n<Picture 4> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n<Picture 4>: attribute_transfer\n\ndetailed_description:\nfour friends, two males either side and a female in the center, smiling broadly. The girl wears a blue blazer, while the boys are in casual jackets. They stand closely together, exuding happiness and friendship. The background is an urban setting with a wall and a tree.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42003,
+      "task_type": "multi_person",
+      "native_seconds": 12.09,
+      "qwen35_seconds": 21.26,
+      "mse": 0.088313,
+      "mae": 0.239474,
+      "psnr_db": 10.54,
+      "frame_corr": 0.123
+    },
+    {
+      "id": "case_05",
+      "refs": 1,
+      "ref_paths": [
+        "qwen35-h3-eval/case_05/picture_1.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n\ndetailed_description:\na man wearing a black shirt with one hand resting on his shoulder, the other bandaged. He has short dark hair and a stubble beard, looking thoughtfully to the side. The background is blurred, emphasizing his upper body.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42004,
+      "task_type": "single_person",
+      "native_seconds": 10.21,
+      "qwen35_seconds": 12.34,
+      "mse": 0.03364,
+      "mae": 0.126437,
+      "psnr_db": 14.731,
+      "frame_corr": 0.4032
+    },
+    {
+      "id": "case_06",
+      "refs": 2,
+      "ref_paths": [
+        "qwen35-h3-eval/case_06/picture_1.png",
+        "qwen35-h3-eval/case_06/picture_2.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n\ndetailed_description:\ntwo men standing side by side. The man on the left is wearing a black coat with a fur-lined hood, and his hair is styled in a slicked-back manner. The man on the right is wearing a blue jacket with a light-colored scarf, and his hair is dark and styled neatly. Both men appear to be looking off to the side, possibly at something out of the frame.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42005,
+      "task_type": "two_person",
+      "native_seconds": 11.2,
+      "qwen35_seconds": 15.61,
+      "mse": 0.051898,
+      "mae": 0.150207,
+      "psnr_db": 12.848,
+      "frame_corr": 0.6144
+    },
+    {
+      "id": "case_07",
+      "refs": 3,
+      "ref_paths": [
+        "qwen35-h3-eval/case_07/picture_1.png",
+        "qwen35-h3-eval/case_07/picture_2.png",
+        "qwen35-h3-eval/case_07/picture_3.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n\ndetailed_description:\nthree people in white tops, one with long wavy hair and pink lipstick, another wearing glasses, and a younger one smiling. They are posed closely together against a white background, suggesting a family portrait.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42006,
+      "task_type": "multi_person",
+      "native_seconds": 10.76,
+      "qwen35_seconds": 14.23,
+      "mse": 0.104587,
+      "mae": 0.23214,
+      "psnr_db": 9.805,
+      "frame_corr": 0.1976
+    },
+    {
+      "id": "case_08",
+      "refs": 4,
+      "ref_paths": [
+        "qwen35-h3-eval/case_08/picture_1.png",
+        "qwen35-h3-eval/case_08/picture_2.png",
+        "qwen35-h3-eval/case_08/picture_3.png",
+        "qwen35-h3-eval/case_08/picture_4.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n<Picture 4> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n<Picture 4>: attribute_transfer\n\ndetailed_description:\nfour people posing together, likely a family. A woman in a striped top and jeans stands on the left, while a man in a blue shirt and jeans sits on a car behind her. A girl in a white dress smiles in front, and two men, one in a patterned shirt and hat, the other in a light shirt, flank them.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42007,
+      "task_type": "multi_person",
+      "native_seconds": 11.66,
+      "qwen35_seconds": 18.64,
+      "mse": 0.089117,
+      "mae": 0.229065,
+      "psnr_db": 10.5,
+      "frame_corr": 0.3101
+    },
+    {
+      "id": "case_09",
+      "refs": 1,
+      "ref_paths": [
+        "qwen35-h3-eval/case_09/picture_1.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n\ndetailed_description:\na smiling woman with short blonde hair. She's wearing a black leather jacket and a colorful necklace. Her posture is open and friendly, with a bright, engaging smile. The background is a simple, out-of-focus pattern, highlighting her presence.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42008,
+      "task_type": "single_person",
+      "native_seconds": 10.28,
+      "qwen35_seconds": 12.62,
+      "mse": 0.02323,
+      "mae": 0.116188,
+      "psnr_db": 16.339,
+      "frame_corr": 0.5572
+    },
+    {
+      "id": "case_10",
+      "refs": 2,
+      "ref_paths": [
+        "qwen35-h3-eval/case_10/picture_1.png",
+        "qwen35-h3-eval/case_10/picture_2.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n\ndetailed_description:\ntwo women walking on a red carpet. The woman on the left wears a strapless black sequined gown, while the one on the right dons a patterned dress with black and silver tones and a bow at the waist. Both have elegant postures, with the right woman waving.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42009,
+      "task_type": "two_person",
+      "native_seconds": 11.21,
+      "qwen35_seconds": 15.83,
+      "mse": 0.062232,
+      "mae": 0.177985,
+      "psnr_db": 12.06,
+      "frame_corr": 0.2731
+    },
+    {
+      "id": "case_11",
+      "refs": 3,
+      "ref_paths": [
+        "qwen35-h3-eval/case_11/picture_1.png",
+        "qwen35-h3-eval/case_11/picture_2.png",
+        "qwen35-h3-eval/case_11/picture_3.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n\ndetailed_description:\nthree people outdoors. Two females wear white t-shirts with visible text and jeans; one has long dark hair and a necklace. A male in a white t-shirt and dark glasses stands behind them. One female holds a blue item, possibly a phone. They appear to be walking.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42010,
+      "task_type": "multi_person",
+      "native_seconds": 11.54,
+      "qwen35_seconds": 17.73,
+      "mse": 0.073843,
+      "mae": 0.199928,
+      "psnr_db": 11.317,
+      "frame_corr": 0.5164
+    },
+    {
+      "id": "case_12",
+      "refs": 4,
+      "ref_paths": [
+        "qwen35-h3-eval/case_12/picture_1.png",
+        "qwen35-h3-eval/case_12/picture_2.png",
+        "qwen35-h3-eval/case_12/picture_3.png",
+        "qwen35-h3-eval/case_12/picture_4.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n<Picture 4> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n<Picture 4>: attribute_transfer\n\ndetailed_description:\nfour people dressed in white shirts posing together. The group includes three males and two females, with one male and one female in the center. They are smiling and standing closely, suggesting a family or close-knit group. The attire is casual and coordinated.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42011,
+      "task_type": "multi_person",
+      "native_seconds": 11.68,
+      "qwen35_seconds": 19.21,
+      "mse": 0.071884,
+      "mae": 0.153446,
+      "psnr_db": 11.434,
+      "frame_corr": 0.7136
+    },
+    {
+      "id": "case_13",
+      "refs": 1,
+      "ref_paths": [
+        "qwen35-h3-eval/case_13/picture_1.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n\ndetailed_description:\na close-up of a man wearing a cream-colored sweater over a white shirt and a burgundy tie. He has a distinctive mustache and white sideburns, and is looking directly at the camera with a neutral expression. The background is blurred and indistinct.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42012,
+      "task_type": "single_person",
+      "native_seconds": 10.47,
+      "qwen35_seconds": 12.73,
+      "mse": 0.050663,
+      "mae": 0.154728,
+      "psnr_db": 12.953,
+      "frame_corr": 0.3826
+    },
+    {
+      "id": "case_14",
+      "refs": 2,
+      "ref_paths": [
+        "qwen35-h3-eval/case_14/picture_1.png",
+        "qwen35-h3-eval/case_14/picture_2.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n\ndetailed_description:\ntwo individuals dressed in outdoor gear. The person on the left is wearing a blue jacket, sunglasses, and a backpack. The person on the right is wearing a grey jacket with a hood and also has a backpack. Both are standing close together, smiling, and appear to be preparing for a hike or outdoor activity.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42013,
+      "task_type": "two_person",
+      "native_seconds": 11.11,
+      "qwen35_seconds": 15.83,
+      "mse": 0.032004,
+      "mae": 0.136727,
+      "psnr_db": 14.948,
+      "frame_corr": 0.5511
+    },
+    {
+      "id": "case_15",
+      "refs": 3,
+      "ref_paths": [
+        "qwen35-h3-eval/case_15/picture_1.png",
+        "qwen35-h3-eval/case_15/picture_2.png",
+        "qwen35-h3-eval/case_15/picture_3.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n\ndetailed_description:\nthree people posing closely together. The person on the left wears a white shirt, while the person in the middle has a sleeveless top. The person on the right has curly hair and a white shirt. All are smiling, with the two on the sides leaning in slightly towards the middle person.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42014,
+      "task_type": "multi_person",
+      "native_seconds": 11.14,
+      "qwen35_seconds": 16.1,
+      "mse": 0.072873,
+      "mae": 0.197215,
+      "psnr_db": 11.374,
+      "frame_corr": 0.502
+    },
+    {
+      "id": "case_16",
+      "refs": 4,
+      "ref_paths": [
+        "qwen35-h3-eval/case_16/picture_1.png",
+        "qwen35-h3-eval/case_16/picture_2.png",
+        "qwen35-h3-eval/case_16/picture_3.png",
+        "qwen35-h3-eval/case_16/picture_4.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n<Picture 4> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n<Picture 4>: attribute_transfer\n\ndetailed_description:\na group of three women and two men, all appearing surprised or shocked. They are closely grouped together, with the women in the front wearing patterned sweaters and the men behind them in casual attire. The expressions and poses suggest they are reacting to something unexpected.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42015,
+      "task_type": "multi_person",
+      "native_seconds": 11.67,
+      "qwen35_seconds": 18.73,
+      "mse": 0.060791,
+      "mae": 0.205165,
+      "psnr_db": 12.162,
+      "frame_corr": -0.095
+    },
+    {
+      "id": "case_17",
+      "refs": 1,
+      "ref_paths": [
+        "qwen35-h3-eval/case_17/picture_1.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n\ndetailed_description:\na smiling woman with long, wavy brown hair styled with a small decorative clip. She's wearing a delicate necklace with a horseshoe pendant. Her posture is upright, exuding confidence and positivity.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42016,
+      "task_type": "single_person",
+      "native_seconds": 10.29,
+      "qwen35_seconds": 12.26,
+      "mse": 0.012108,
+      "mae": 0.054048,
+      "psnr_db": 19.169,
+      "frame_corr": 0.8521
+    },
+    {
+      "id": "case_18",
+      "refs": 2,
+      "ref_paths": [
+        "qwen35-h3-eval/case_18/picture_1.png",
+        "qwen35-h3-eval/case_18/picture_2.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n\ndetailed_description:\ntwo young women taking a selfie. The woman on the left has her hair in a bun and is wearing a blue top, while the woman on the right has short hair and is wearing a black top. Both are smiling, with the left woman making a playful face.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42017,
+      "task_type": "two_person",
+      "native_seconds": 10.99,
+      "qwen35_seconds": 15.67,
+      "mse": 0.129868,
+      "mae": 0.275688,
+      "psnr_db": 8.865,
+      "frame_corr": 0.2395
+    },
+    {
+      "id": "case_19",
+      "refs": 3,
+      "ref_paths": [
+        "qwen35-h3-eval/case_19/picture_1.png",
+        "qwen35-h3-eval/case_19/picture_2.png",
+        "qwen35-h3-eval/case_19/picture_3.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n\ndetailed_description:\ntwo men and a young girl posing together. The man on the left has red hair and wears a navy blazer. The other man has short hair and wears a purple checkered shirt. The girl is in front, wearing a pink top and smiling. All three have their arms crossed and are smiling at the camera.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42018,
+      "task_type": "multi_person",
+      "native_seconds": 11.15,
+      "qwen35_seconds": 15.82,
+      "mse": 0.035263,
+      "mae": 0.09845,
+      "psnr_db": 14.527,
+      "frame_corr": 0.7118
+    },
+    {
+      "id": "case_20",
+      "refs": 4,
+      "ref_paths": [
+        "qwen35-h3-eval/case_20/picture_1.png",
+        "qwen35-h3-eval/case_20/picture_2.png",
+        "qwen35-h3-eval/case_20/picture_3.png",
+        "qwen35-h3-eval/case_20/picture_4.png"
+      ],
+      "original_prompt": "subject_definitions:\n<Picture 1> is an ordered appearance reference for this scene.\n<Picture 2> is an ordered appearance reference for this scene.\n<Picture 3> is an ordered appearance reference for this scene.\n<Picture 4> is an ordered appearance reference for this scene.\n\nsummary:\n[reference generation] Generate the described scene using the supplied appearance references.\n\nretention_analysis:\n<Picture 1>: attribute_transfer\n<Picture 2>: attribute_transfer\n<Picture 3>: attribute_transfer\n<Picture 4>: attribute_transfer\n\ndetailed_description:\nfour friends, two males and two females, posing closely for a selfie. The girl in white makes a peace sign. A male in a grey \"PSV\" shirt smiles, while another in a black jacket wears red shades. The last male in a black shirt grins. They all look happy.\n\noverall_soundscape:\nN/A\n\nnon_diegetic_music:\nN/A",
+      "seed": 42019,
+      "task_type": "multi_person",
+      "native_seconds": 11.87,
+      "qwen35_seconds": 20.08,
+      "mse": 0.066621,
+      "mae": 0.195493,
+      "psnr_db": 11.764,
+      "frame_corr": 0.3413
+    }
+  ]
+}
