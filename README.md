@@ -22,8 +22,9 @@ Restart ComfyUI.
 Add **`Qwen3.5-9B H3 Projection CLIP Loader`** (`Qwen35H3ClipLoader`, under `conditioning/minimax`):
 
 - **`model_path`**: `"Qwen/Qwen3.5-9B"` (or local path to the Hugging Face `Qwen/Qwen3.5-9B` directory)
-- **`projection_path`**: path to `projection_best.safetensors` (from [Alissonerdx/Qwen3.5-9B-Minimax-H3](https://huggingface.co/Alissonerdx/Qwen3.5-9B-Minimax-H3))
-- **`ara_path`** *(optional)*: path to `ara_best.safetensors` LoRA weights (when using the joint ARA + projection weights)
+- **`projection_file`**: `"minimax_h3_qwen3.5_9b_projection.safetensors"` (auto-downloaded from [Alissonerdx/Qwen3.5-9B-Minimax-H3](https://huggingface.co/Alissonerdx/Qwen3.5-9B-Minimax-H3))
+- **`lora_file`** *(optional)*: `"minimax_h3_qwen3.5_9b_lora.safetensors"` (auto-downloaded from HF; LoRA on `visual.merger` + layers 12–19)
+- **`auto_download`**: `True` (automatically downloads weights if not found locally)
 
 Connect its `CLIP` output directly to ComfyUI's official **`MiniMax H3 Reference to Video`** (`MiniMaxH3ReferenceToVideo`) node.
 

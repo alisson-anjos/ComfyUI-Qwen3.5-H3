@@ -227,7 +227,7 @@ class Qwen35H3ClipLoader:
                 "auto_download": ("BOOLEAN", {"default": True}),
             },
             "optional": {
-                "ara_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_ara.safetensors"}),
+                "lora_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_lora.safetensors"}),
             },
         }
 
@@ -235,10 +235,10 @@ class Qwen35H3ClipLoader:
     FUNCTION = "load"
     CATEGORY = "conditioning/minimax"
 
-    def load(self, model_path: str, projection_file: str, auto_download: bool = True, ara_file: str = ""):
+    def load(self, model_path: str, projection_file: str, auto_download: bool = True, lora_file: str = ""):
         proj_path = _resolve_model_file(projection_file, "minimax_h3_qwen3.5_9b_projection.safetensors", auto_download)
-        ara_path = _resolve_model_file(ara_file, "minimax_h3_qwen3.5_9b_ara.safetensors", auto_download) if (ara_file or "").strip() else ""
-        return (Qwen35H3Clip(model_path=model_path, projection_path=proj_path, ara_path=ara_path),)
+        lora_path = _resolve_model_file(lora_file, "minimax_h3_qwen3.5_9b_lora.safetensors", auto_download) if (lora_file or "").strip() else ""
+        return (Qwen35H3Clip(model_path=model_path, projection_path=proj_path, ara_path=lora_path),)
 
 
 NODE_CLASS_MAPPINGS = {
