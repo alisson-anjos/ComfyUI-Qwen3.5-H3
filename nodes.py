@@ -272,8 +272,7 @@ class Qwen35H3Apply:
                     break
         if te_mod is None:
             raise ValueError("Expected a Qwen3.5 CLIP model from Load CLIP.")
-        te_mod.layer = "hidden"
-        te_mod.layer_idx = tap - 1
+        out_clip.clip_layer(tap - 1)
         te_mod.layer_norm_hidden_state = False
 
         if use_lora:
