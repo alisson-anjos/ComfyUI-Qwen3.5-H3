@@ -1,0 +1,67 @@
+{
+  "total_paired_cases": 6,
+  "mean_psnr_db": 14.804,
+  "mean_frame_corr": 0.5715,
+  "cases": [
+    {
+      "id": "case_01",
+      "refs": 1,
+      "seed": 42000,
+      "lora_seconds": 17.47,
+      "mse": 0.070235,
+      "mae": 0.208566,
+      "psnr_db": 11.534,
+      "frame_corr": 0.0929
+    },
+    {
+      "id": "case_02",
+      "refs": 2,
+      "seed": 42001,
+      "lora_seconds": 16.02,
+      "mse": 0.045505,
+      "mae": 0.139247,
+      "psnr_db": 13.419,
+      "frame_corr": 0.736
+    },
+    {
+      "id": "case_03",
+      "refs": 3,
+      "seed": 42002,
+      "lora_seconds": 17.04,
+      "mse": 0.013755,
+      "mae": 0.080394,
+      "psnr_db": 18.615,
+      "frame_corr": 0.7146
+    },
+    {
+      "id": "case_04",
+      "refs": 4,
+      "seed": 42003,
+      "lora_seconds": 21.37,
+      "mse": 0.042172,
+      "mae": 0.159311,
+      "psnr_db": 13.75,
+      "frame_corr": 0.5424
+    },
+    {
+      "id": "case_05",
+      "refs": 1,
+      "seed": 42004,
+      "lora_seconds": 12.36,
+      "mse": 0.019761,
+      "mae": 0.094413,
+      "psnr_db": 17.042,
+      "frame_corr": 0.6057
+    },
+    {
+      "id": "case_06",
+      "refs": 2,
+      "seed": 42005,
+      "lora_seconds": 15.85,
+      "mse": 0.035795,
+      "mae": 0.116558,
+      "psnr_db": 14.462,
+      "frame_corr": 0.7374
+    }
+  ]
+}

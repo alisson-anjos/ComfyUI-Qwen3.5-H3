@@ -33,21 +33,41 @@ It is a **rank-16 LoRA (34 linear modules)** trained **jointly** with `minimax_h
 
 At load time, `Qwen35H3ClipLoader` merges the LoRA directly into the linear weights (`W += (alpha / r) * B @ A`), adding **zero runtime overhead**.
 
-## Baseline Results (Projection Only — Without LoRA)
+## Results: Projection Only vs Joint LoRA + Projection (Epoch 3)
 
-The initial baseline (`minimax_h3_qwen3.5_9b_projection.safetensors` without LoRA) was evaluated on **20 held-out multi-reference cases** (`1` to `4` reference images per case) from `WithAnyone/MultiID-Bench`, comparing **Native MiniMax-H3 (Qwen3-VL-32B INT8)** vs **Qwen3.5-9B + Projection** with identical seeds, steps, resolution (`672x384`, `124` frames, `24` fps), and reference images:
+| Variant | Text Cosine | Vision (`refs`) Cosine | Overall Score | Video Mean PSNR | Video Frame Corr |
+|---|---|---|---|---|---|
+| Projection Only (No LoRA) | `0.8919` | `0.7873` | `0.8396` | `12.877 dB` | `0.4410` |
+| Joint LoRA + Projection — Epoch 1 | `0.9417` | `0.8801` | `0.9109` | — | — |
+| Joint LoRA + Projection — Epoch 2 | `0.9492` | `0.8867` | `0.9180` | — | — |
+| **Joint LoRA + Projection — Epoch 3** | **`0.9507`** | **`0.8879`** | **`0.9193`** | **`14.804 dB`** | **`0.5715`** |
 
-- **Validation Cosine Similarity (118 held-out sources)**: `0.8396` overall (`text: 0.8919`, `vision: 0.7873`)
-- **20-Case Paired Video Comparison** (`evidence/video_comparison.json`):
-  - Mean PSNR: `12.877 dB`
-  - Mean Frame Correlation: `0.441`
-  - Mean Generation Time (4-step Pika Ref2VA + Turbo): `15.77s` (native) vs `20.68s` (Qwen3.5-9B projected)
+### Visual Examples (With Epoch 3 LoRA + Projection)
 
-> **Note:** Joint **LoRA (`visual.merger` + layers 12–19) + Projection** training is currently in progress to boost `<Picture 1..N>` reference fidelity (Epoch 2 validation already reached **`0.9492` text** / **`0.8867` vision** / **`0.9180` overall**). LoRA comparison examples will be added next!
+Each comparison video shows the `<Picture 1..N>` references at the top, **Native H3 (32B INT8)** on the left, **Qwen3.5-9B + Projection + LoRA** on the right, and the H3 prompt at the bottom:
 
-### Visual Examples (Projection Only, No LoRA)
+#### Case 02 (2 references — PSNR `13.419 dB`, Frame Corr `0.7360` vs `0.6657` without LoRA)
+- [Side-by-side comparison video (`case_02_lora_comparison.mp4`)](showcase/videos/case_02_lora_comparison.mp4)
 
-Each comparison video includes the ordered `<Picture 1..N>` references at the top, **Native H3 (32B INT8)** on the left, **Qwen3.5-9B + Projection** on the right, and the H3 prompt at the bottom:
+| Native H3 (32B INT8) | Qwen3.5-9B + Projection + LoRA |
+|---|---|
+| ![Case 02 Native](showcase/images/case_02_native_h3_5x4.png) | ![Case 02 Qwen3.5 + LoRA](showcase/images/case_02_qwen35_lora_5x4.png) |
+
+#### Case 03 (3 references — PSNR `18.615 dB`, Frame Corr `0.7146` vs `0.5220` without LoRA)
+- [Side-by-side comparison video (`case_03_lora_comparison.mp4`)](showcase/videos/case_03_lora_comparison.mp4)
+
+| Native H3 (32B INT8) | Qwen3.5-9B + Projection + LoRA |
+|---|---|
+| ![Case 03 Native](showcase/images/case_03_native_h3_5x4.png) | ![Case 03 Qwen3.5 + LoRA](showcase/images/case_03_qwen35_lora_5x4.png) |
+
+#### Case 04 (4 references — PSNR `13.750 dB`, Frame Corr `0.5424` vs `0.1230` without LoRA)
+- [Side-by-side comparison video (`case_04_lora_comparison.mp4`)](showcase/videos/case_04_lora_comparison.mp4)
+
+| Native H3 (32B INT8) | Qwen3.5-9B + Projection + LoRA |
+|---|---|
+| ![Case 04 Native](showcase/images/case_04_native_h3_5x4.png) | ![Case 04 Qwen3.5 + LoRA](showcase/images/case_04_qwen35_lora_5x4.png) |
+
+### Baseline Examples (Projection Only, No LoRA)
 
 #### Case 01 (1 reference — PSNR `14.165 dB`, Frame Corr `0.4378`)
 - [Side-by-side comparison video (`case_01_comparison.mp4`)](showcase/videos/case_01_comparison.mp4)
@@ -74,3 +94,4 @@ Each comparison video includes the ordered `<Picture 1..N>` references at the to
 
 - [`evidence/validation_metrics.json`](evidence/validation_metrics.json)
 - [`evidence/video_comparison.json`](evidence/video_comparison.json)
+- [`evidence/lora_video_comparison.json`](evidence/lora_video_comparison.json)
