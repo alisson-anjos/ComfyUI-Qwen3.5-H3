@@ -86,3 +86,9 @@ Each comparison video shows the `<Picture 1..N>` references at the top, **Native
 - [`evidence/validation_metrics.json`](evidence/validation_metrics.json)
 - [`evidence/video_comparison.json`](evidence/video_comparison.json)
 - [`evidence/lora_video_comparison.json`](evidence/lora_video_comparison.json)
+
+## Support
+
+If this project saves you VRAM or helps your workflow and you'd like to support GPU compute for ongoing distillation & training runs:
+
+- [Buy Me a Coffee](https://buymeacoffee.com/nrdx)
