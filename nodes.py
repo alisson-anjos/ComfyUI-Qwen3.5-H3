@@ -23,14 +23,17 @@ def _resolve_model_file(path_or_name: str, default_hf_filename: str, auto_downlo
         return val
     try:
         import folder_paths
-        cache_dir = Path(folder_paths.models_dir) / "text_encoders" / "qwen35_h3"
+        cache_dir = Path(folder_paths.models_dir) / "clip_projections"
+        legacy_dir = Path(folder_paths.models_dir) / "text_encoders" / "qwen35_h3"
     except Exception:
         cache_dir = Path.home() / ".cache" / "qwen35_h3"
+        legacy_dir = cache_dir
     cache_dir.mkdir(parents=True, exist_ok=True)
     if val:
-        candidate = cache_dir / Path(val).name
-        if candidate.exists():
-            return str(candidate)
+        for d in (cache_dir, legacy_dir):
+            candidate = d / Path(val).name
+            if candidate.exists():
+                return str(candidate)
     if not auto_download:
         raise FileNotFoundError(f"Model file not found locally and auto_download=False: {val or default_hf_filename}")
     hf_file = val if ("/" in val and not val.startswith("/")) else default_hf_filename
