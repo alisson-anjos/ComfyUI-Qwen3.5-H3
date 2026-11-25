@@ -224,11 +224,7 @@ class Qwen35H3Apply:
             "required": {
                 "clip": ("CLIP", {"tooltip": "Native Qwen3.5-9B CLIP loaded via ComfyUI's Load CLIP node."}),
                 "use_lora": ("BOOLEAN", {"default": True, "tooltip": "Enable the trained rank-16 LoRA (visual.merger + layers 12-19) to boost <Picture 1..N> reference identity fidelity and prompt alignment."}),
-                "auto_download": ("BOOLEAN", {"default": True, "tooltip": "Automatically download missing projection/LoRA weights from Alissonerdx/Qwen3.5-9B-Minimax-H3."}),
-            },
-            "optional": {
-                "projection_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_projection.safetensors", "tooltip": "4096->5120 projection weights file or HF filename."}),
-                "lora_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_lora.safetensors", "tooltip": "LoRA weights file or HF filename (only used when use_lora is enabled)."}),
+                "auto_download": ("BOOLEAN", {"default": True, "tooltip": "Automatically download missing projection/LoRA weights from Alissonerdx/Qwen3.5-9B-Minimax-H3 if not already cached locally."}),
             },
         }
 
@@ -236,13 +232,14 @@ class Qwen35H3Apply:
     FUNCTION = "apply"
     CATEGORY = "conditioning/minimax"
 
-    def apply(self, clip, use_lora: bool = True, auto_download: bool = True,
-              projection_file: str = "minimax_h3_qwen3.5_9b_projection.safetensors",
-              lora_file: str = "minimax_h3_qwen3.5_9b_lora.safetensors"):
+    def apply(self, clip, use_lora: bool = True, auto_download: bool = True):
         from types import MethodType
         from comfy.weight_adapter import LoRAAdapter
 
-        proj_path = _resolve_model_file(projection_file, "minimax_h3_qwen3.5_9b_projection.safetensors", auto_download)
+        proj_name = "minimax_h3_qwen3.5_9b_projection.safetensors"
+        lora_name = "minimax_h3_qwen3.5_9b_lora.safetensors"
+        proj_path = _resolve_model_file(proj_name, proj_name, auto_download)
+        print(f"[ComfyUI-Qwen3.5-H3] Projection ready: {proj_path}", flush=True)
         with safe_open(proj_path, framework="pt", device="cpu") as f:
             meta = f.metadata() or {}
         tap = int(meta.get("tap", "20"))
@@ -276,8 +273,9 @@ class Qwen35H3Apply:
         te_mod.layer_idx = tap - 1
         te_mod.layer_norm_hidden_state = False
 
-        if use_lora and (lora_file or "").strip():
-            lora_path = _resolve_model_file(lora_file, "minimax_h3_qwen3.5_9b_lora.safetensors", auto_download)
+        if use_lora:
+            lora_path = _resolve_model_file(lora_name, lora_name, auto_download)
+            print(f"[ComfyUI-Qwen3.5-H3] LoRA ready: {lora_path}", flush=True)
             with safe_open(lora_path, framework="pt", device="cpu") as f:
                 ara_meta = f.metadata() or {}
             rank = int(ara_meta.get("rank", "16"))
