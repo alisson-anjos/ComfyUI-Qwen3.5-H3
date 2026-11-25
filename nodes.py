@@ -341,7 +341,12 @@ class Qwen35H3Apply:
 
         def h3_encode_scheduled(self, tokens, unprojected=False, add_dict=None, show_pbar=True):
             last_embeds_info[0] = []
-            cond_list = orig_encode(tokens, unprojected=unprojected, add_dict=add_dict, show_pbar=show_pbar)
+            cond_list = orig_encode(
+                tokens,
+                unprojected=unprojected,
+                add_dict={} if add_dict is None else add_dict,
+                show_pbar=show_pbar,
+            )
             out_list = []
             for h, extra in cond_list:
                 tags = torch.ones(h.shape[1], dtype=torch.long)
