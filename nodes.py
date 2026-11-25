@@ -222,12 +222,13 @@ class Qwen35H3ClipLoader:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model_path": ("STRING", {"default": "Qwen/Qwen3.5-9B"}),
-                "projection_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_projection.safetensors"}),
-                "auto_download": ("BOOLEAN", {"default": True}),
+                "model_path": ("STRING", {"default": "Qwen/Qwen3.5-9B", "tooltip": "Hugging Face repo ID or local path to Qwen/Qwen3.5-9B."}),
+                "projection_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_projection.safetensors", "tooltip": "4096->5120 projection weights mapping Qwen3.5-9B layer 20 to MiniMax-H3."}),
+                "use_lora": ("BOOLEAN", {"default": True, "tooltip": "Enable the trained rank-16 LoRA (visual.merger + layers 12-19) to boost <Picture 1..N> reference identity fidelity and prompt alignment."}),
+                "auto_download": ("BOOLEAN", {"default": True, "tooltip": "Automatically download missing projection/LoRA weights from Alissonerdx/Qwen3.5-9B-Minimax-H3."}),
             },
             "optional": {
-                "lora_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_lora.safetensors"}),
+                "lora_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_lora.safetensors", "tooltip": "LoRA weights file (only used when use_lora is enabled)."}),
             },
         }
 
@@ -235,9 +236,9 @@ class Qwen35H3ClipLoader:
     FUNCTION = "load"
     CATEGORY = "conditioning/minimax"
 
-    def load(self, model_path: str, projection_file: str, auto_download: bool = True, lora_file: str = ""):
+    def load(self, model_path: str, projection_file: str, use_lora: bool = True, auto_download: bool = True, lora_file: str = ""):
         proj_path = _resolve_model_file(projection_file, "minimax_h3_qwen3.5_9b_projection.safetensors", auto_download)
-        lora_path = _resolve_model_file(lora_file, "minimax_h3_qwen3.5_9b_lora.safetensors", auto_download) if (lora_file or "").strip() else ""
+        lora_path = _resolve_model_file(lora_file, "minimax_h3_qwen3.5_9b_lora.safetensors", auto_download) if (use_lora and (lora_file or "").strip()) else ""
         return (Qwen35H3Clip(model_path=model_path, projection_path=proj_path, ara_path=lora_path),)
 
 
