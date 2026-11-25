@@ -226,8 +226,11 @@ class Qwen35H3Apply:
         return {
             "required": {
                 "clip": ("CLIP", {"tooltip": "Native Qwen3.5-9B CLIP loaded via ComfyUI's Load CLIP node."}),
-                "use_lora": ("BOOLEAN", {"default": True, "tooltip": "Enable the trained rank-16 LoRA (visual.merger + layers 12-19) to boost <Picture 1..N> reference identity fidelity and prompt alignment."}),
+                "use_lora": ("BOOLEAN", {"default": True, "tooltip": "Enable the trained alignment LoRA to boost <Picture 1..N> reference identity fidelity and prompt alignment."}),
                 "auto_download": ("BOOLEAN", {"default": True, "tooltip": "Automatically download missing projection/LoRA weights from Alissonerdx/Qwen3.5-9B-Minimax-H3 if not already cached locally."}),
+            },
+            "optional": {
+                "weights_version": (["v2 (latest)", "v1"], {"default": "v2 (latest)", "tooltip": "Select which projection/LoRA checkpoint to load: v2 (latest) uses the root weights, v1 uses the *_v1 baseline."}),
             },
         }
 
@@ -235,12 +238,13 @@ class Qwen35H3Apply:
     FUNCTION = "apply"
     CATEGORY = "conditioning/minimax"
 
-    def apply(self, clip, use_lora: bool = True, auto_download: bool = True):
+    def apply(self, clip, use_lora: bool = True, auto_download: bool = True, weights_version: str = "v2 (latest)"):
         from types import MethodType
         from comfy.weight_adapter import LoRAAdapter
 
-        proj_name = "minimax_h3_qwen3.5_9b_projection.safetensors"
-        lora_name = "minimax_h3_qwen3.5_9b_lora.safetensors"
+        suffix = "_v1" if weights_version == "v1" else ""
+        proj_name = f"minimax_h3_qwen3.5_9b_projection{suffix}.safetensors"
+        lora_name = f"minimax_h3_qwen3.5_9b_lora{suffix}.safetensors"
         proj_path = _resolve_model_file(proj_name, proj_name, auto_download)
         print(f"[ComfyUI-Qwen3.5-H3] Projection ready: {proj_path}", flush=True)
         with safe_open(proj_path, framework="pt", device="cpu") as f:
