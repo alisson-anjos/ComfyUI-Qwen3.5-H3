@@ -242,7 +242,7 @@ class Qwen35H3Apply:
         from types import MethodType
         from comfy.weight_adapter import LoRAAdapter
 
-        suffix = "_v1" if weights_version == "v1" else ""
+        suffix = "_v1" if weights_version == "v1" else "_v2"
         proj_name = f"minimax_h3_qwen3.5_9b_projection{suffix}.safetensors"
         lora_name = f"minimax_h3_qwen3.5_9b_lora{suffix}.safetensors"
         proj_path = _resolve_model_file(proj_name, proj_name, auto_download)
