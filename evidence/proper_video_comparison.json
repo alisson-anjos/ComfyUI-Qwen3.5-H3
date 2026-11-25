@@ -1,0 +1,39 @@
+{
+  "total_paired_cases": 4,
+  "mean_psnr_db": 14.764,
+  "mean_frame_corr": 0.631,
+  "cases": [
+    {
+      "id": "case_01",
+      "refs": 1,
+      "mse": 0.014611,
+      "mae": 0.073728,
+      "psnr_db": 18.353,
+      "frame_corr": 0.8359
+    },
+    {
+      "id": "case_02",
+      "refs": 2,
+      "mse": 0.032672,
+      "mae": 0.101152,
+      "psnr_db": 14.858,
+      "frame_corr": 0.8223
+    },
+    {
+      "id": "case_03",
+      "refs": 3,
+      "mse": 0.033548,
+      "mae": 0.131096,
+      "psnr_db": 14.743,
+      "frame_corr": 0.3852
+    },
+    {
+      "id": "case_04",
+      "refs": 4,
+      "mse": 0.077545,
+      "mae": 0.206849,
+      "psnr_db": 11.104,
+      "frame_corr": 0.4808
+    }
+  ]
+}

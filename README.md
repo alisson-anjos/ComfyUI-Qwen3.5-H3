@@ -40,32 +40,23 @@ At load time, `Qwen35H3ClipLoader` merges the LoRA directly into the linear weig
 | Projection Only (No LoRA) | `0.8919` | `0.7873` | `0.8396` | `12.877 dB` | `0.4410` |
 | Joint LoRA + Projection — Epoch 1 | `0.9417` | `0.8801` | `0.9109` | — | — |
 | Joint LoRA + Projection — Epoch 2 | `0.9492` | `0.8867` | `0.9180` | — | — |
-| **Joint LoRA + Projection — Epoch 3** | **`0.9507`** | **`0.8879`** | **`0.9193`** | **`14.804 dB`** | **`0.5715`** |
+| **Joint LoRA + Projection — Epoch 3** | **`0.9507`** | **`0.8879`** | **`0.9193`** | **`14.764 dB`** | **`0.6310`** |
 
-### Visual Examples (With Epoch 3 LoRA + Projection)
+### Visual Examples (With Epoch 3 LoRA + Projection, Clean H3 Prompts)
 
-Each comparison video shows the `<Picture 1..N>` references at the top, **Native H3 (32B INT8)** on the left, **Qwen3.5-9B + Projection + LoRA** on the right, and the H3 prompt at the bottom:
+Each comparison video shows the `<Picture 1..N>` references at the top, **Native H3 (32B INT8)** on the left, **Qwen3.5-9B + Projection + LoRA** on the right, and the clean H3 prompt at the bottom:
 
-#### Case 02 (2 references — PSNR `13.419 dB`, Frame Corr `0.7360` vs `0.6657` without LoRA)
-- [Side-by-side comparison video (`case_02_lora_comparison.mp4`)](showcase/videos/case_02_lora_comparison.mp4)
+#### Case 01 (1 reference — PSNR `18.353 dB`, Frame Corr `0.8359`)
+- [Side-by-side comparison video (`case_01_proper_comparison.mp4`)](showcase/videos/case_01_proper_comparison.mp4)
 
-| Native H3 (32B INT8) | Qwen3.5-9B + Projection + LoRA |
-|---|---|
-| ![Case 02 Native](showcase/images/case_02_native_h3_5x4.png) | ![Case 02 Qwen3.5 + LoRA](showcase/images/case_02_qwen35_lora_5x4.png) |
+#### Case 02 (2 references — PSNR `14.858 dB`, Frame Corr `0.8223`)
+- [Side-by-side comparison video (`case_02_proper_comparison.mp4`)](showcase/videos/case_02_proper_comparison.mp4)
 
-#### Case 03 (3 references — PSNR `18.615 dB`, Frame Corr `0.7146` vs `0.5220` without LoRA)
-- [Side-by-side comparison video (`case_03_lora_comparison.mp4`)](showcase/videos/case_03_lora_comparison.mp4)
+#### Case 03 (3 references — PSNR `14.743 dB`, Frame Corr `0.3852`)
+- [Side-by-side comparison video (`case_03_proper_comparison.mp4`)](showcase/videos/case_03_proper_comparison.mp4)
 
-| Native H3 (32B INT8) | Qwen3.5-9B + Projection + LoRA |
-|---|---|
-| ![Case 03 Native](showcase/images/case_03_native_h3_5x4.png) | ![Case 03 Qwen3.5 + LoRA](showcase/images/case_03_qwen35_lora_5x4.png) |
-
-#### Case 04 (4 references — PSNR `13.750 dB`, Frame Corr `0.5424` vs `0.1230` without LoRA)
-- [Side-by-side comparison video (`case_04_lora_comparison.mp4`)](showcase/videos/case_04_lora_comparison.mp4)
-
-| Native H3 (32B INT8) | Qwen3.5-9B + Projection + LoRA |
-|---|---|
-| ![Case 04 Native](showcase/images/case_04_native_h3_5x4.png) | ![Case 04 Qwen3.5 + LoRA](showcase/images/case_04_qwen35_lora_5x4.png) |
+#### Case 04 (4 references — PSNR `11.104 dB`, Frame Corr `0.4808`)
+- [Side-by-side comparison video (`case_04_proper_comparison.mp4`)](showcase/videos/case_04_proper_comparison.mp4)
 
 ### Baseline Examples (Projection Only, No LoRA)
 
