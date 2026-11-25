@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-qwen3-5-h3"
 description = "ComfyUI text/vision encoder bridge to use Qwen/Qwen3.5-9B with MiniMax-H3 Ref2VA via a calibrated projection and optional LoRA."
-version = "0.2.7"
+version = "0.2.8"
 license = {file = "LICENSE"}
 dependencies = [
     "transformers>=4.51.0",

@@ -231,6 +231,7 @@ class Qwen35H3Apply:
             },
             "optional": {
                 "weights_version": (["v2 (latest)", "v1"], {"default": "v2 (latest)", "tooltip": "Select which projection/LoRA checkpoint to load: v2 (latest) uses the root weights, v1 uses the *_v1 baseline."}),
+                "lora_strength": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.05, "tooltip": "Strength multiplier for the alignment LoRA (0.0 disables LoRA; 0.5-1.0 blends Projection-only with Full LoRA)."}),
             },
         }
 
@@ -238,7 +239,7 @@ class Qwen35H3Apply:
     FUNCTION = "apply"
     CATEGORY = "conditioning/minimax"
 
-    def apply(self, clip, use_lora: bool = True, auto_download: bool = True, weights_version: str = "v2 (latest)"):
+    def apply(self, clip, use_lora: bool = True, auto_download: bool = True, weights_version: str = "v2 (latest)", lora_strength: float = 1.0):
         from types import MethodType
         from comfy.weight_adapter import LoRAAdapter
 
@@ -279,7 +280,7 @@ class Qwen35H3Apply:
         out_clip.clip_layer(tap - 1)
         te_mod.layer_norm_hidden_state = False
 
-        if use_lora:
+        if use_lora and float(lora_strength) != 0.0:
             lora_path = _resolve_model_file(lora_name, lora_name, auto_download)
             print(f"[ComfyUI-Qwen3.5-H3] LoRA ready: {lora_path}", flush=True)
             with safe_open(lora_path, framework="pt", device="cpu") as f:
@@ -301,7 +302,7 @@ class Qwen35H3Apply:
                 B = lora_sd[f"{prefix}.lora_B"]
                 patches[target_key] = LoRAAdapter(target_key, (B, A, alpha, None, None, None))
             if patches:
-                out_clip.add_patches(patches, strength_patch=1.0)
+                out_clip.add_patches(patches, strength_patch=float(lora_strength))
 
         orig_process_tokens = te_mod.process_tokens
         last_embeds_info = [[]]
