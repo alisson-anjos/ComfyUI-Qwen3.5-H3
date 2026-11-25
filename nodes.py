@@ -310,21 +310,27 @@ class Qwen35H3Apply:
         orig_tokenize = out_clip.tokenize
         orig_encode = out_clip.encode_from_tokens_scheduled
 
-        def h3_tokenize(self, text, return_word_ids=False, minimax_ref_items=None, **kwargs):
-            images = []
+        def h3_tokenize(self, text, return_word_ids=False, minimax_ref_items=None, images=None, picture_label="<Picture %d>: ", **kwargs):
+            ref_images = []
             prefix_parts = []
-            img_idx = 0
-            for item in minimax_ref_items or []:
-                if item.get("type") == "image" and item.get("data") is not None:
-                    img_idx += 1
-                    images.append(item["data"])
-                    prefix_parts.append(f"<Picture {img_idx}>: <|vision_start|><|image_pad|><|vision_end|>")
+            if minimax_ref_items:
+                img_idx = 0
+                for item in minimax_ref_items:
+                    if item.get("type") == "image" and item.get("data") is not None:
+                        img_idx += 1
+                        ref_images.append(item["data"])
+                        prefix_parts.append(f"<Picture {img_idx}>: <|vision_start|><|image_pad|><|vision_end|>")
+            elif images:
+                for i, img in enumerate(images, 1):
+                    ref_images.append(img)
+                    lbl = picture_label % i if "%d" in picture_label else picture_label
+                    prefix_parts.append(f"{lbl}<|vision_start|><|image_pad|><|vision_end|>")
             h3_text = "".join(prefix_parts) + (text or "")
             tokens = orig_tokenize(
                 h3_text,
                 return_word_ids=return_word_ids,
                 llama_template="{}",
-                images=images,
+                images=ref_images,
                 prevent_empty_text=True,
                 **kwargs,
             )
