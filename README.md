@@ -19,14 +19,11 @@ Restart ComfyUI.
 
 ## Node Usage
 
-Add **`Qwen3.5-9B H3 Projection CLIP Loader`** (`Qwen35H3ClipLoader`, under `conditioning/minimax`):
-
-- **`model_path`**: `"Qwen/Qwen3.5-9B"` (or local path to the Hugging Face `Qwen/Qwen3.5-9B` directory)
-- **`projection_file`**: `"minimax_h3_qwen3.5_9b_projection.safetensors"` (auto-downloaded from [Alissonerdx/Qwen3.5-9B-Minimax-H3](https://huggingface.co/Alissonerdx/Qwen3.5-9B-Minimax-H3))
-- **`lora_file`** *(optional)*: `"minimax_h3_qwen3.5_9b_lora.safetensors"` (auto-downloaded from HF)
-- **`auto_download`**: `True` (automatically downloads weights if not found locally)
-
-Connect its `CLIP` output directly to ComfyUI's official **`MiniMax H3 Reference to Video`** (`MiniMaxH3ReferenceToVideo`) node.
+1. Load your Qwen3.5-9B text encoder (`qwen3.5_9b_bf16.safetensors`, `qwen3.5_9b_int8_convrot.safetensors`, or `qwen3.5_9b_w4a8_gptq.safetensors` from [Comfy-Org/Qwen3.5](https://huggingface.co/Comfy-Org/Qwen3.5/tree/main/text_encoders)) using ComfyUI's native **`Load CLIP`** (`CLIPLoader`).
+2. Connect its `CLIP` output to **`Apply Qwen3.5-H3 Projection & LoRA`** (`Qwen35H3Apply`, under `conditioning/minimax`):
+   - **`use_lora`**: `True` *(enables the trained rank-16 LoRA on `visual.merger` + layers 12–19)*
+   - **`auto_download`**: `True` *(automatically downloads `minimax_h3_qwen3.5_9b_projection.safetensors` and `minimax_h3_qwen3.5_9b_lora.safetensors` from [Alissonerdx/Qwen3.5-9B-Minimax-H3](https://huggingface.co/Alissonerdx/Qwen3.5-9B-Minimax-H3))*
+3. Connect the `CLIP` output directly to ComfyUI's official **`MiniMax H3 Reference to Video`** (`MiniMaxH3ReferenceToVideo`) node.
 
 ## What is `minimax_h3_qwen3.5_9b_lora.safetensors`?
 

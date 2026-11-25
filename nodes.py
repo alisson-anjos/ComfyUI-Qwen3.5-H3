@@ -215,6 +215,150 @@ class Qwen35H3Clip:
         return [[cond, out]]
 
 
+class Qwen35H3Apply:
+    """Apply MiniMax-H3 projection (and optional LoRA) to a native ComfyUI Qwen3.5-9B CLIP."""
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "clip": ("CLIP", {"tooltip": "Native Qwen3.5-9B CLIP loaded via ComfyUI's Load CLIP node."}),
+                "use_lora": ("BOOLEAN", {"default": True, "tooltip": "Enable the trained rank-16 LoRA (visual.merger + layers 12-19) to boost <Picture 1..N> reference identity fidelity and prompt alignment."}),
+                "auto_download": ("BOOLEAN", {"default": True, "tooltip": "Automatically download missing projection/LoRA weights from Alissonerdx/Qwen3.5-9B-Minimax-H3."}),
+            },
+            "optional": {
+                "projection_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_projection.safetensors", "tooltip": "4096->5120 projection weights file or HF filename."}),
+                "lora_file": ("STRING", {"default": "minimax_h3_qwen3.5_9b_lora.safetensors", "tooltip": "LoRA weights file or HF filename (only used when use_lora is enabled)."}),
+            },
+        }
+
+    RETURN_TYPES = ("CLIP",)
+    FUNCTION = "apply"
+    CATEGORY = "conditioning/minimax"
+
+    def apply(self, clip, use_lora: bool = True, auto_download: bool = True,
+              projection_file: str = "minimax_h3_qwen3.5_9b_projection.safetensors",
+              lora_file: str = "minimax_h3_qwen3.5_9b_lora.safetensors"):
+        from types import MethodType
+        from comfy.weight_adapter import LoRAAdapter
+
+        proj_path = _resolve_model_file(projection_file, "minimax_h3_qwen3.5_9b_projection.safetensors", auto_download)
+        with safe_open(proj_path, framework="pt", device="cpu") as f:
+            meta = f.metadata() or {}
+        tap = int(meta.get("tap", "20"))
+        saved = load_file(proj_path, device="cpu")
+        proj = {k: saved[k].float() for k in ["W", "mean_in", "std_in", "mean_out", "std_out"]}
+        residual = {k.removeprefix("mlp."): v.float() for k, v in saved.items() if k.startswith("mlp.")}
+        mlp = None
+        if residual:
+            mlp = torch.nn.Sequential(
+                torch.nn.Linear(4096, 8192),
+                torch.nn.GELU(),
+                torch.nn.Linear(8192, 5120),
+            )
+            mlp.load_state_dict(residual)
+            mlp.eval().requires_grad_(False)
+
+        out_clip = clip.clone()
+        # Configure native Qwen3.5 TE to output unnormalized hidden state at layer tap - 1 (20th layer = idx 19).
+        te_name = getattr(out_clip.cond_stage_model, "clip_name", None) or "qwen35_9b"
+        te_mod = getattr(out_clip.cond_stage_model, te_name, None)
+        if te_mod is None:
+            for attr in dir(out_clip.cond_stage_model):
+                obj = getattr(out_clip.cond_stage_model, attr, None)
+                if hasattr(obj, "layer_idx") and hasattr(obj, "transformer"):
+                    te_mod = obj
+                    te_name = attr
+                    break
+        if te_mod is None:
+            raise ValueError("Expected a Qwen3.5 CLIP model from Load CLIP.")
+        te_mod.layer = "hidden"
+        te_mod.layer_idx = tap - 1
+        te_mod.layer_norm_hidden_state = False
+
+        if use_lora and (lora_file or "").strip():
+            lora_path = _resolve_model_file(lora_file, "minimax_h3_qwen3.5_9b_lora.safetensors", auto_download)
+            with safe_open(lora_path, framework="pt", device="cpu") as f:
+                ara_meta = f.metadata() or {}
+            rank = int(ara_meta.get("rank", "16"))
+            alpha = float(ara_meta.get("alpha", str(rank)))
+            lora_sd = load_file(lora_path, device="cpu")
+            sd_keys = set(out_clip.patcher.model.state_dict().keys())
+            patches = {}
+            for prefix in {k.rsplit(".", 1)[0] for k in lora_sd if k.endswith(".lora_A")}:
+                mapped = prefix.replace("model.language_model.", "model.").replace("model.visual.", "visual.")
+                target_key = f"{te_name}.transformer.{mapped}.weight"
+                if target_key not in sd_keys:
+                    matches = [k for k in sd_keys if k.endswith(f".{mapped}.weight")]
+                    if not matches:
+                        continue
+                    target_key = matches[0]
+                A = lora_sd[f"{prefix}.lora_A"]
+                B = lora_sd[f"{prefix}.lora_B"]
+                patches[target_key] = LoRAAdapter(target_key, (B, A, alpha, None, None, None))
+            if patches:
+                out_clip.add_patches(patches, strength_patch=1.0)
+
+        orig_process_tokens = te_mod.process_tokens
+        last_embeds_info = [[]]
+
+        def wrapped_process_tokens(self_te, tokens_in, device, **kwargs):
+            embeds, attention_mask, num_tokens, embeds_info = orig_process_tokens(tokens_in, device, **kwargs)
+            last_embeds_info[0] = embeds_info
+            return embeds, attention_mask, num_tokens, embeds_info
+
+        te_mod.process_tokens = MethodType(wrapped_process_tokens, te_mod)
+
+        orig_tokenize = out_clip.tokenize
+        orig_encode = out_clip.encode_from_tokens_scheduled
+
+        def h3_tokenize(self, text, return_word_ids=False, minimax_ref_items=None, **kwargs):
+            images = []
+            prefix_parts = []
+            img_idx = 0
+            for item in minimax_ref_items or []:
+                if item.get("type") == "image" and item.get("data") is not None:
+                    img_idx += 1
+                    images.append(item["data"])
+                    prefix_parts.append(f"<Picture {img_idx}>: <|vision_start|><|image_pad|><|vision_end|>")
+            h3_text = "".join(prefix_parts) + (text or "")
+            tokens = orig_tokenize(
+                h3_text,
+                return_word_ids=return_word_ids,
+                llama_template="{}",
+                images=images,
+                prevent_empty_text=True,
+                **kwargs,
+            )
+            return tokens
+
+        def h3_encode_scheduled(self, tokens, unprojected=False, add_dict=None, show_pbar=True):
+            last_embeds_info[0] = []
+            cond_list = orig_encode(tokens, unprojected=unprojected, add_dict=add_dict, show_pbar=show_pbar)
+            out_list = []
+            for h, extra in cond_list:
+                tags = torch.ones(h.shape[1], dtype=torch.long)
+                for e in last_embeds_info[0]:
+                    if e.get("type") == "image":
+                        tags[max(0, e["index"] - 1):min(h.shape[1], e["index"] + e["size"] + 1)] = 0
+                dev = h.device
+                z = (h.float() - proj["mean_in"].to(dev)) / proj["std_in"].to(dev)
+                with torch.no_grad():
+                    y = z @ proj["W"].to(dev)
+                    if mlp is not None:
+                        y = y + mlp.to(dev)(z)
+                proj_h = (y * proj["std_out"].to(dev) + proj["mean_out"].to(dev)).to(h.dtype)
+                new_extra = dict(extra)
+                new_extra["pooled_output"] = torch.zeros((proj_h.shape[0], 5120), dtype=proj_h.dtype, device=proj_h.device)
+                new_extra["minimax_token_tags"] = tags.unsqueeze(0)
+                out_list.append([proj_h, new_extra])
+            return out_list
+
+        out_clip.tokenize = MethodType(h3_tokenize, out_clip)
+        out_clip.encode_from_tokens_scheduled = MethodType(h3_encode_scheduled, out_clip)
+        return (out_clip,)
+
+
 class Qwen35H3ClipLoader:
     """ComfyUI node that loads Qwen3.5-9B + a trained MiniMax-H3 projection."""
 
@@ -243,9 +387,11 @@ class Qwen35H3ClipLoader:
 
 
 NODE_CLASS_MAPPINGS = {
+    "Qwen35H3Apply": Qwen35H3Apply,
     "Qwen35H3ClipLoader": Qwen35H3ClipLoader,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "Qwen35H3ClipLoader": "Qwen3.5-9B H3 Projection CLIP Loader",
+    "Qwen35H3Apply": "Apply Qwen3.5-H3 Projection & LoRA",
+    "Qwen35H3ClipLoader": "Qwen3.5-9B H3 Projection CLIP Loader (Standalone)",
 }
